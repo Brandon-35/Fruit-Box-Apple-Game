@@ -129,6 +129,8 @@ export default function App() {
         isFeverMode={game.isFeverMode}
         onGoHome={goHome}
         onToggleMute={handleToggleMute}
+        onPauseResume={togglePause}
+        onRestart={startGame}
         playSound={playSound}
       />
 
@@ -180,13 +182,7 @@ export default function App() {
         </div>
 
         <InfoCards
-          gameState={game.gameState}
           gameMode={gameMode}
-          selectedFruit={selectedFruit}
-          onPauseResume={togglePause}
-          onRestart={startGame}
-          onGoHome={goHome}
-          playSound={playSound}
         />
       </main>
 
@@ -201,10 +197,10 @@ export default function App() {
       <footer className="max-w-7xl mx-auto px-6 py-16 text-center">
         <div className="flex items-center justify-center gap-4 mb-4">
           <div className="h-px w-12 bg-game-border" />
-          <span className="text-game-text-faint text-[11px] font-semibold uppercase tracking-[0.4em]">Fruit Box Pro</span>
+          <span className="text-game-text-muted text-xs font-semibold uppercase tracking-[0.4em]">Fruit Box Pro</span>
           <div className="h-px w-12 bg-game-border" />
         </div>
-        <p className="text-game-text-faint/50 text-[10px] font-medium uppercase tracking-widest">
+        <p className="text-game-text-muted/70 text-xs font-medium uppercase tracking-widest">
           Multi-Fruit Engine v4.0
         </p>
       </footer>

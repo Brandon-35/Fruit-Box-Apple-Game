@@ -23,15 +23,17 @@ export function GameOverOverlay({ show, grid, score, highScore, selectedFruit, o
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="absolute inset-0 z-30 flex items-center justify-center bg-white/80 backdrop-blur-2xl rounded-card-lg"
+          role="dialog"
+          aria-label="Kết quả trò chơi"
         >
           <div className="text-center p-10 md:p-14 bg-game-surface rounded-card-lg shadow-[0_16px_64px_-16px_rgba(78,69,229,0.2)] border border-game-border max-w-md w-full mx-4">
-            <div className="text-7xl mb-6">{selectedFruit.icon}</div>
+            <div className="text-7xl mb-6" role="img" aria-hidden="true">{selectedFruit.icon}</div>
             <h2 className="text-4xl md:text-5xl font-heading font-extrabold text-game-text mb-3 tracking-tight">
               {isBoardCleared ? 'Đã Xóa Sạch!' : "Hết Giờ!"}
             </h2>
             <div className="flex flex-col gap-2 mb-10">
               <p className="text-3xl font-mono font-extrabold text-game-primary">Điểm: {score}</p>
-              <p className="text-sm font-semibold text-game-text-faint uppercase tracking-wider">Kỷ lục: {highScore}</p>
+              <p className="text-sm font-semibold text-game-text-muted uppercase tracking-wider">Kỷ lục: {highScore}</p>
             </div>
             <div className="flex flex-col gap-3">
               <m.button

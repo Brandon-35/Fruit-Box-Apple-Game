@@ -21,6 +21,8 @@ export function PauseOverlay({ show, selectedFruit, onResume, onGoHome, playSoun
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-game-bg/70 backdrop-blur-2xl"
+          role="dialog"
+          aria-label="Tạm dừng"
         >
           <m.div
             initial={{ scale: 0.95, opacity: 0 }}

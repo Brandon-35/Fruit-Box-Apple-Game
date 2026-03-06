@@ -35,7 +35,7 @@ export function HomeScreen({
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
             className={`w-20 h-20 ${selectedFruit.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg ${selectedFruit.shadow}`}
           >
-            <span className="text-4xl">{selectedFruit.icon}</span>
+            <span className="text-4xl" role="img" aria-hidden="true">{selectedFruit.icon}</span>
           </m.div>
 
           <h1 className="text-4xl md:text-5xl font-heading font-extrabold tracking-tight text-game-text mb-3">Fruit Box</h1>
@@ -79,18 +79,18 @@ export function HomeScreen({
               </div>
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 bg-gray-800 rounded-full flex items-center justify-center text-white"><Bomb size={10} /></div>
-                  <p className="text-[11px] text-game-text-muted font-medium">Bom: Xóa vùng 3x3</p>
+                  <div className="w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center text-white"><Bomb size={12} /></div>
+                  <p className="text-xs text-game-text-muted font-medium">Bom: Xóa vùng 3x3</p>
                 </div>
                 {gameMode !== 'ENDLESS' && (
                   <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white"><Clock size={10} /></div>
-                    <p className="text-[11px] text-game-text-muted font-medium">Đồng hồ: Thêm 5 giây</p>
+                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white"><Clock size={12} /></div>
+                    <p className="text-xs text-game-text-muted font-medium">Đồng hồ: Thêm 5 giây</p>
                   </div>
                 )}
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-[8px]">X</div>
-                  <p className="text-[11px] text-game-text-muted font-medium">Wildcard: Tổng bằng 10</p>
+                  <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs">X</div>
+                  <p className="text-xs text-game-text-muted font-medium">Wildcard: Tổng bằng 10</p>
                 </div>
               </div>
             </div>
@@ -98,13 +98,13 @@ export function HomeScreen({
 
           {/* Game Mode Selection */}
           <div className="mb-8">
-            <h3 className="text-xs font-heading font-bold text-game-text-faint uppercase tracking-[0.2em] mb-3">Chọn Chế Độ</h3>
+            <h3 className="text-xs font-heading font-bold text-game-text-muted uppercase tracking-[0.2em] mb-3">Chọn Chế Độ</h3>
             <div className="flex justify-center gap-2">
               {(Object.keys(GAME_MODES) as GameModeKey[]).map((key) => (
                 <button
                   key={key}
                   onClick={() => onSetGameMode(key)}
-                  className={`px-5 py-2.5 rounded-button text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  className={`px-5 min-h-[44px] py-2.5 rounded-button text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     gameMode === key
                       ? 'bg-game-primary text-white shadow-md shadow-indigo-200'
                       : 'text-game-text-muted hover:text-game-text hover:bg-game-surface-alt border border-game-border'
@@ -114,20 +114,20 @@ export function HomeScreen({
                 </button>
               ))}
             </div>
-            <p className="text-[11px] text-game-text-faint mt-2 font-medium italic">
+            <p className="text-xs text-game-text-muted mt-2 font-medium italic">
               {GAME_MODES[gameMode].description}
             </p>
           </div>
 
           {/* Difficulty Selection */}
           <div className="mb-8">
-            <h3 className="text-xs font-heading font-bold text-game-text-faint uppercase tracking-[0.2em] mb-3">Chọn Độ Khó</h3>
+            <h3 className="text-xs font-heading font-bold text-game-text-muted uppercase tracking-[0.2em] mb-3">Chọn Độ Khó</h3>
             <div className="flex justify-center gap-2">
               {(Object.keys(DIFFICULTIES) as DifficultyKey[]).map((key) => (
                 <button
                   key={key}
                   onClick={() => onSetDifficulty(key)}
-                  className={`px-5 py-2.5 rounded-button text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  className={`px-5 min-h-[44px] py-2.5 rounded-button text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     difficulty === key
                       ? 'bg-game-primary text-white shadow-md shadow-indigo-200'
                       : 'text-game-text-muted hover:text-game-text hover:bg-game-surface-alt border border-game-border'
@@ -141,19 +141,20 @@ export function HomeScreen({
 
           {/* Fruit Selection */}
           <div className="mb-10">
-            <h3 className="text-xs font-heading font-bold text-game-text-faint uppercase tracking-[0.2em] mb-3">Chọn Loại Quả</h3>
+            <h3 className="text-xs font-heading font-bold text-game-text-muted uppercase tracking-[0.2em] mb-3">Chọn Loại Quả</h3>
             <div className="flex flex-wrap justify-center gap-3">
               {FRUITS.map((fruit) => (
                 <button
                   key={fruit.id}
                   onClick={() => onSetFruit(fruit)}
+                  aria-label={fruit.label}
                   className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl transition-all duration-200 cursor-pointer ${
                     selectedFruit.id === fruit.id
                       ? `${fruit.color} shadow-md ${fruit.shadow} scale-110 ring-2 ring-white`
                       : 'bg-game-surface-alt hover:bg-white hover:shadow-sm border border-game-border'
                   }`}
                 >
-                  {fruit.icon}
+                  <span role="img" aria-hidden="true">{fruit.icon}</span>
                 </button>
               ))}
             </div>
@@ -174,11 +175,11 @@ export function HomeScreen({
         <div className="bg-game-surface-alt py-4 px-8 md:px-12 flex justify-between items-center border-t border-game-border">
           <div className="flex items-center gap-2">
             <Trophy size={14} className="text-yellow-500" />
-            <span className="text-[11px] font-semibold text-game-text-faint uppercase tracking-wider">Kỷ lục: {highScore}</span>
+            <span className="text-xs font-semibold text-game-text-muted uppercase tracking-wider">Kỷ lục: {highScore}</span>
           </div>
           <div className="flex items-center gap-2">
             <Timer size={14} className="text-game-primary" />
-            <span className="text-[11px] font-semibold text-game-text-faint uppercase tracking-wider">
+            <span className="text-xs font-semibold text-game-text-muted uppercase tracking-wider">
               {gameMode === 'TIME_ATTACK' ? `Giới hạn ${config.time}s` : 'Không giới hạn thời gian'}
             </span>
           </div>

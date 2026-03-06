@@ -17,6 +17,8 @@ export function ActionFeedbackToast({ lastAction }: ActionFeedbackToastProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -16, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
+            role="status"
+            aria-live="polite"
             className={`flex items-center gap-2.5 px-5 py-2.5 rounded-card shadow-lg border backdrop-blur-md ${
               lastAction.type === 'success'
                 ? 'bg-emerald-500/90 border-emerald-400/50 text-white'
@@ -30,7 +32,7 @@ export function ActionFeedbackToast({ lastAction }: ActionFeedbackToastProps) {
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm">Tuyệt vời!</span>
-                  <span className="text-[10px] font-medium opacity-80">Tính toán rất tốt</span>
+                  <span className="text-xs font-medium opacity-80">Tính toán rất tốt</span>
                 </div>
               </>
             ) : (
@@ -40,7 +42,7 @@ export function ActionFeedbackToast({ lastAction }: ActionFeedbackToastProps) {
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-sm">Thử lại</span>
-                  <span className="text-[10px] font-medium opacity-80">Tổng phải bằng đúng 10</span>
+                  <span className="text-xs font-medium opacity-80">Tổng phải bằng đúng 10</span>
                 </div>
               </>
             )}

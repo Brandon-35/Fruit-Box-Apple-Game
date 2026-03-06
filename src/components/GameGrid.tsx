@@ -1,5 +1,5 @@
 import React from 'react';
-import { m, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Bomb, Clock, Sparkles, Trophy, Zap } from 'lucide-react';
 import type { AppleData, Selection, FruitConfig, DifficultyConfig } from '../types';
 import { CONSTANTS } from '../data/gameData';
@@ -32,6 +32,8 @@ export function GameGrid({
   onMouseDown, onMouseMove, onMouseUp, onMouseLeave,
   onTouchStart, onTouchMove, onTouchEnd,
 }: GameGridProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div className="relative">
       {/* Fever Mode Background Glow */}
@@ -49,7 +51,7 @@ export function GameGrid({
       {/* Grid Container */}
       <m.div
         ref={gridRef}
-        animate={isShaking ? {
+        animate={isShaking && !shouldReduceMotion ? {
           x: [-2, 2, -2, 2, 0],
           transition: { duration: 0.4 }
         } : {}}
@@ -86,6 +88,7 @@ export function GameGrid({
                   isSelected={!!isSelected}
                   isFeverMode={isFeverMode}
                   selectedFruit={selectedFruit}
+                  shouldReduceMotion={!!shouldReduceMotion}
                 />
               );
             })
@@ -110,9 +113,9 @@ export function GameGrid({
             />
             {/* Sum Indicator */}
             <m.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={shouldReduceMotion ? false : { scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className={`absolute pointer-events-none z-30 px-3.5 py-1.5 rounded-full text-sm font-bold text-white shadow-lg transition-colors duration-200 flex items-center gap-1.5 ${
+              className={`absolute pointer-events-none z-30 px-3.5 py-1.5 rounded-full text-sm font-bold text-white shadow-lg transition-colors duration-200 flex items-center gap-1.5 hud-text-shadow ${
                 currentSelectionSum === 10 ? 'bg-emerald-500' : currentSelectionSum > 10 ? 'bg-red-500' : 'bg-game-primary'
               }`}
               style={{
@@ -136,18 +139,21 @@ interface AppleCellProps {
   isSelected: boolean;
   isFeverMode: boolean;
   selectedFruit: FruitConfig;
+  shouldReduceMotion: boolean;
 }
 
-const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, selectedFruit }) => {
+const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, selectedFruit, shouldReduceMotion }) => {
+  const isSpecial = apple.type !== 'normal';
+
   return (
     <m.div
-      initial={{ scale: 0.95, opacity: 0 }}
+      initial={shouldReduceMotion ? false : { scale: 0.95, opacity: 0 }}
       animate={{
         scale: apple.isCleared ? 0 : (isSelected ? 1.15 : 1),
         opacity: apple.isCleared ? 0 : 1,
-        rotate: apple.isCleared ? 45 : (isSelected && apple.type === 'clock' ? 360 : 0),
-        x: (isFeverMode && !apple.isCleared) ? [0, -1, 1, -1, 1, 0] : 0,
-        y: (isFeverMode && !apple.isCleared) ? [0, 1, -1, 1, -1, 0] : (apple.type === 'golden' && !apple.isCleared && !isSelected ? [0, -4, 0] : 0),
+        rotate: apple.isCleared ? (shouldReduceMotion ? 0 : 45) : 0,
+        x: (isFeverMode && !apple.isCleared && !shouldReduceMotion) ? [0, -1, 1, -1, 1, 0] : 0,
+        y: (apple.type === 'golden' && !apple.isCleared && !isSelected && !shouldReduceMotion) ? [0, -4, 0] : 0,
       }}
       whileHover={!apple.isCleared ? { scale: 1.08 } : {}}
       transition={{
@@ -155,16 +161,9 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
           type: "spring",
           stiffness: 300,
           damping: 15,
-          repeat: (apple.type !== 'normal' && !apple.isCleared && !isSelected) ? Infinity : 0,
-          duration: 2
-        },
-        rotate: {
-          repeat: (isSelected && apple.type === 'clock') ? Infinity : 0,
-          duration: 1,
-          ease: "linear"
         },
         y: {
-          repeat: (apple.type === 'golden' && !apple.isCleared && !isSelected) ? Infinity : 0,
+          repeat: (apple.type === 'golden' && !apple.isCleared && !isSelected && !shouldReduceMotion) ? Infinity : 0,
           duration: 2,
           ease: "easeInOut"
         },
@@ -176,10 +175,10 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
     >
       {!apple.isCleared && (
         <div className="relative w-full h-full flex items-center justify-center group">
-          {/* Special Apple Glows */}
-          {apple.type !== 'normal' && (
+          {/* Special Apple Glow - only when selected */}
+          {isSpecial && isSelected && (
             <m.div
-              animate={{
+              animate={shouldReduceMotion ? {} : {
                 scale: [1, 1.2, 1],
                 opacity: [0.2, 0.5, 0.2],
               }}
@@ -195,6 +194,16 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
                 'bg-yellow-400'
               }`}
             />
+          )}
+
+          {/* Static indicator ring for unselected special apples */}
+          {isSpecial && !isSelected && (
+            <div className={`absolute inset-0 rounded-full opacity-20 ${
+              apple.type === 'bomb' ? 'bg-red-500' :
+              apple.type === 'clock' ? 'bg-blue-400' :
+              apple.type === 'wildcard' ? 'bg-purple-400' :
+              'bg-yellow-400'
+            }`} />
           )}
 
           {/* Fruit Background */}
@@ -216,56 +225,25 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
                 } group-hover:brightness-95`
           }`} />
 
-          {/* Shine Effect for Special Apples */}
-          {apple.type !== 'normal' && (
-            <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-              <m.div
-                animate={{ x: ['-100%', '200%'] }}
-                transition={{ repeat: Infinity, duration: 3, ease: "linear", delay: Math.random() * 2 }}
-                className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-12"
-              />
-            </div>
-          )}
-
-          <span className={`relative z-10 font-mono font-extrabold text-lg md:text-2xl transition-all duration-300 ${isSelected ? 'text-white scale-125' : apple.type !== 'normal' ? 'text-white' : 'text-game-text/70'}`}>
+          <span className={`relative z-10 font-mono font-extrabold text-lg md:text-2xl transition-all duration-300 ${isSelected ? 'text-white scale-125' : isSpecial ? 'text-white' : 'text-game-text/70'}`}>
             {apple.type === 'bomb' ? (
-              <m.div
-                animate={isSelected ? { scale: [1, 1.2, 1] } : {}}
-                transition={{ repeat: isSelected ? Infinity : 0, duration: 0.5 }}
-              >
-                <Bomb size={22} strokeWidth={3} className="drop-shadow-md" />
-              </m.div>
+              <Bomb size={22} strokeWidth={3} className="drop-shadow-md" />
             ) :
              apple.type === 'clock' ? (
-              <m.div
-                animate={isSelected ? { rotate: 360 } : {}}
-                transition={{ repeat: isSelected ? Infinity : 0, duration: 2, ease: "linear" }}
-              >
-                <Clock size={22} strokeWidth={3} className="drop-shadow-md" />
-              </m.div>
+              <Clock size={22} strokeWidth={3} className="drop-shadow-md" />
              ) :
              apple.type === 'wildcard' ? (
-              <m.div
-                animate={isSelected ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
-                transition={{ repeat: isSelected ? Infinity : 0, duration: 0.6 }}
-              >
-                <Sparkles size={22} strokeWidth={3} className="drop-shadow-md" />
-              </m.div>
+              <Sparkles size={22} strokeWidth={3} className="drop-shadow-md" />
              ) :
              apple.type === 'golden' ? (
-              <m.div
-                animate={isSelected ? { y: [0, -5, 0], scale: [1, 1.2, 1] } : {}}
-                transition={{ repeat: isSelected ? Infinity : 0, duration: 1 }}
-              >
-                <Trophy size={22} strokeWidth={3} className="drop-shadow-md" />
-              </m.div>
+              <Trophy size={22} strokeWidth={3} className="drop-shadow-md" />
              ) :
              apple.value}
           </span>
 
           {/* Fruit Icon Decor */}
-          <div className={`absolute top-1 right-1/2 translate-x-1/2 -translate-y-1/2 text-[10px] transition-opacity ${isSelected ? 'opacity-100' : 'opacity-20'}`}>
-            {apple.type === 'normal' ? selectedFruit.icon : null}
+          <div className={`absolute top-1 right-1/2 translate-x-1/2 -translate-y-1/2 text-xs transition-opacity ${isSelected ? 'opacity-100' : 'opacity-20'}`}>
+            {apple.type === 'normal' ? <span role="img" aria-hidden="true">{selectedFruit.icon}</span> : null}
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import { m } from 'motion/react';
-import { Timer, Trophy, Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Timer, Trophy, Play, Pause, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 import type { DifficultyKey, GameModeKey, FruitConfig, GameState } from '../types';
 import { DIFFICULTIES, GAME_MODES, SOUNDS } from '../data/gameData';
 
@@ -14,6 +14,8 @@ interface GameHeaderProps {
   isFeverMode: boolean;
   onGoHome: () => void;
   onToggleMute: () => void;
+  onPauseResume: () => void;
+  onRestart: () => void;
   playSound: (url: string) => void;
 }
 
@@ -24,8 +26,8 @@ function formatTime(seconds: number) {
 }
 
 export function GameHeader({
-  difficulty, gameMode, selectedFruit, timeLeft, score,
-  isMuted, isFeverMode, onGoHome, onToggleMute, playSound,
+  difficulty, gameMode, selectedFruit, gameState, timeLeft, score,
+  isMuted, isFeverMode, onGoHome, onToggleMute, onPauseResume, onRestart, playSound,
 }: GameHeaderProps) {
   const config = DIFFICULTIES[difficulty];
 
@@ -34,6 +36,7 @@ export function GameHeader({
       <div className="flex items-center gap-4">
         <button
           onClick={onGoHome}
+          aria-label="Về trang chủ"
           className="group flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
         >
           <m.div
@@ -41,17 +44,17 @@ export function GameHeader({
             whileTap={{ scale: 0.95 }}
             className={`w-11 h-11 ${selectedFruit.color} rounded-xl flex items-center justify-center shadow-md ${selectedFruit.shadow}`}
           >
-            <span className="text-white font-bold text-2xl">{selectedFruit.icon}</span>
+            <span className="text-white font-bold text-2xl" role="img" aria-hidden="true">{selectedFruit.icon}</span>
           </m.div>
           <div className="text-left">
             <h1 className="text-2xl font-heading font-extrabold tracking-tight text-game-text group-hover:text-game-primary transition-colors">Fruit Box</h1>
             <div className="flex items-center gap-2">
-              <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+              <span className={`text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                 difficulty === 'HARD' ? 'bg-red-50 text-red-500' : difficulty === 'MEDIUM' ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'
               }`}>
                 {config.label}
               </span>
-              <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-game-primary">
+              <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-game-primary">
                 {GAME_MODES[gameMode].label}
               </span>
             </div>
@@ -59,11 +62,11 @@ export function GameHeader({
         </button>
       </div>
 
-      <div className="flex items-center gap-5 md:gap-10">
+      <div className="flex items-center gap-3 md:gap-6">
         {gameMode === 'TIME_ATTACK' && (
           <div className="flex flex-col items-center md:items-end">
-            <span className="text-[10px] font-semibold text-game-text-faint uppercase tracking-wider mb-0.5">Thời gian</span>
-            <div className={`flex items-center gap-2 text-2xl font-mono font-extrabold ${timeLeft < 20 ? 'text-game-danger animate-pulse' : 'text-game-text'}`}>
+            <span className="text-xs font-semibold text-game-text-muted uppercase tracking-wider mb-0.5">Thời gian</span>
+            <div className={`flex items-center gap-2 text-2xl font-mono font-extrabold hud-text-shadow ${timeLeft < 20 ? 'text-game-danger animate-pulse' : 'text-game-text'}`}>
               <Timer size={20} strokeWidth={2.5} />
               {formatTime(timeLeft)}
             </div>
@@ -71,23 +74,23 @@ export function GameHeader({
         )}
         {gameMode === 'ENDLESS' && (
           <div className="flex flex-col items-center md:items-end">
-            <span className="text-[10px] font-semibold text-game-text-faint uppercase tracking-wider mb-0.5">Trạng thái</span>
-            <div className="flex items-center gap-2 text-2xl font-mono font-extrabold text-emerald-500">
+            <span className="text-xs font-semibold text-game-text-muted uppercase tracking-wider mb-0.5">Trạng thái</span>
+            <div className="flex items-center gap-2 text-2xl font-mono font-extrabold text-emerald-500 hud-text-shadow">
               <Play size={20} fill="currentColor" />
               VÔ TẬN
             </div>
           </div>
         )}
         <div className="flex flex-col items-center md:items-end">
-          <span className="text-[10px] font-semibold text-game-text-faint uppercase tracking-wider mb-0.5">Điểm</span>
-          <div className="flex items-center gap-2 text-2xl font-mono font-extrabold text-game-text">
+          <span className="text-xs font-semibold text-game-text-muted uppercase tracking-wider mb-0.5">Điểm</span>
+          <div className="flex items-center gap-2 text-2xl font-mono font-extrabold text-game-text hud-text-shadow">
             <div className="relative">
               <Trophy size={20} className={isFeverMode ? "text-game-accent" : "text-yellow-500"} strokeWidth={2.5} />
               {isFeverMode && (
                 <m.div
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="absolute -top-1.5 -right-1.5 bg-game-accent text-white text-[7px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ring-2 ring-white"
+                  className="absolute -top-1.5 -right-1.5 bg-game-accent text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white"
                 >
                   3x
                 </m.div>
@@ -97,18 +100,42 @@ export function GameHeader({
           </div>
         </div>
 
-        <button
-          onClick={() => {
-            onToggleMute();
-            if (isMuted) playSound(SOUNDS.CLICK);
-          }}
-          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer ${
-            isMuted ? 'bg-game-surface-alt text-game-text-faint' : 'bg-indigo-50 text-game-primary'
-          }`}
-          title={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
-        >
-          {isMuted ? <VolumeX size={20} strokeWidth={2.5} /> : <Volume2 size={20} strokeWidth={2.5} />}
-        </button>
+        <div className="h-8 w-px bg-game-border hidden md:block" />
+
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              onPauseResume();
+              playSound(SOUNDS.CLICK);
+            }}
+            disabled={gameState === 'gameover'}
+            aria-label={gameState === 'paused' ? 'Tiếp tục chơi' : 'Tạm dừng'}
+            className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed ${
+              gameState === 'paused' ? 'bg-game-primary text-white shadow-md shadow-indigo-200' : 'bg-indigo-50 text-game-primary hover:bg-indigo-100'
+            }`}
+          >
+            {gameState === 'paused' ? <Play size={20} fill="currentColor" /> : <Pause size={20} strokeWidth={2.5} />}
+          </button>
+          <button
+            onClick={onRestart}
+            aria-label="Đặt lại trò chơi"
+            className="w-11 h-11 rounded-xl flex items-center justify-center bg-game-surface-alt text-game-text-muted hover:text-game-danger hover:bg-red-50 transition-all duration-200 cursor-pointer border border-game-border"
+          >
+            <RotateCcw size={18} strokeWidth={2.5} />
+          </button>
+          <button
+            onClick={() => {
+              onToggleMute();
+              if (isMuted) playSound(SOUNDS.CLICK);
+            }}
+            className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer ${
+              isMuted ? 'bg-game-surface-alt text-game-text-muted' : 'bg-indigo-50 text-game-primary'
+            }`}
+            aria-label={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
+          >
+            {isMuted ? <VolumeX size={20} strokeWidth={2.5} /> : <Volume2 size={20} strokeWidth={2.5} />}
+          </button>
+        </div>
       </div>
     </header>
   );
