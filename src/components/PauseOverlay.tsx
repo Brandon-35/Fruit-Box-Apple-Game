@@ -19,31 +19,40 @@ export function PauseOverlay({ show, selectedFruit, onResume, onGoHome, playSoun
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#FDFCFB]/70 backdrop-blur-2xl"
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-game-bg/70 backdrop-blur-2xl"
         >
-          <div className="bg-white p-20 rounded-[4rem] shadow-[0_64px_128px_-32px_rgba(0,0,0,0.2)] text-center border border-[#F1F3F5] max-w-md w-full">
-            <div className={`w-24 h-24 ${selectedFruit.color} text-white rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-2xl ${selectedFruit.shadow}`}>
-              <Pause size={48} strokeWidth={3} />
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="bg-game-surface p-12 md:p-16 rounded-card-lg shadow-[0_16px_64px_-16px_rgba(78,69,229,0.2)] text-center border border-game-border max-w-md w-full mx-4"
+          >
+            <div className={`w-20 h-20 ${selectedFruit.color} text-white rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg ${selectedFruit.shadow}`}>
+              <Pause size={40} strokeWidth={2.5} />
             </div>
-            <h2 className="text-5xl font-black text-[#1A1A1A] mb-10 tracking-tighter">Đã Tạm Dừng</h2>
-            <div className="flex flex-col gap-4">
-              <button
+            <h2 className="text-4xl font-heading font-extrabold text-game-text mb-8 tracking-tight">Đã Tạm Dừng</h2>
+            <div className="flex flex-col gap-3">
+              <motion.button
                 onClick={() => {
                   onResume();
                   playSound(SOUNDS.CLICK);
                 }}
-                className={`w-full px-16 py-6 ${selectedFruit.color} text-white rounded-[2rem] font-black text-2xl shadow-2xl ${selectedFruit.shadow} hover:brightness-110 transition-all hover:-translate-y-2 cursor-pointer`}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full px-12 py-5 ${selectedFruit.color} text-white rounded-card font-heading font-bold text-xl shadow-lg ${selectedFruit.shadow} hover:brightness-110 transition-all cursor-pointer`}
               >
                 Tiếp tục
-              </button>
+              </motion.button>
               <button
                 onClick={onGoHome}
-                className="w-full px-16 py-5 bg-[#F8F9FA] text-[#A0AEC0] rounded-[2rem] font-black text-lg hover:text-[#1A1A1A] transition-all flex items-center justify-center gap-3 cursor-pointer"
+                className="w-full px-12 py-4 bg-game-surface-alt text-game-text-muted rounded-card font-bold text-base hover:text-game-text hover:bg-game-border/50 transition-all flex items-center justify-center gap-2 cursor-pointer border border-game-border"
               >
-                <Home size={24} /> Thoát ra Trang chủ
+                <Home size={20} /> Thoát ra Trang chủ
               </button>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

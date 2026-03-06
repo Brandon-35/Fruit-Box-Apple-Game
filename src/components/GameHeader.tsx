@@ -30,30 +30,28 @@ export function GameHeader({
   const config = DIFFICULTIES[difficulty];
 
   return (
-    <header className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#F1F3F5] bg-white/80 backdrop-blur-xl sticky top-0 z-40">
-      <div className="flex items-center gap-5">
+    <header className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-game-border bg-game-surface/80 backdrop-blur-xl sticky top-0 z-40">
+      <div className="flex items-center gap-4">
         <button
           onClick={onGoHome}
-          className="group flex items-center gap-3 hover:text-red-500 transition-colors cursor-pointer"
+          className="group flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
         >
           <motion.div
-            whileHover={{ scale: 1.1, rotate: 10 }}
-            whileTap={{ scale: 0.9 }}
-            className={`w-14 h-14 ${selectedFruit.color} rounded-2xl flex items-center justify-center shadow-2xl ${selectedFruit.shadow}`}
+            whileHover={{ scale: 1.05, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
+            className={`w-11 h-11 ${selectedFruit.color} rounded-xl flex items-center justify-center shadow-md ${selectedFruit.shadow}`}
           >
-            <span className="text-white font-bold text-3xl">{selectedFruit.icon}</span>
+            <span className="text-white font-bold text-2xl">{selectedFruit.icon}</span>
           </motion.div>
           <div className="text-left">
-            <h1 className="text-3xl font-black tracking-tighter text-[#1A1A1A] group-hover:text-inherit">Fruit Box</h1>
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-black text-[#A0AEC0] uppercase tracking-[0.2em]">Cấp độ:</span>
-              <span className={`text-[10px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded-full ${
-                difficulty === 'HARD' ? 'bg-red-50 text-red-500' : difficulty === 'MEDIUM' ? 'bg-orange-50 text-orange-500' : 'bg-green-50 text-green-500'
+            <h1 className="text-2xl font-heading font-extrabold tracking-tight text-game-text group-hover:text-game-primary transition-colors">Fruit Box</h1>
+            <div className="flex items-center gap-2">
+              <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                difficulty === 'HARD' ? 'bg-red-50 text-red-500' : difficulty === 'MEDIUM' ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'
               }`}>
                 {config.label}
               </span>
-              <span className="text-[10px] font-black text-[#A0AEC0] uppercase tracking-[0.2em] ml-2">Chế độ:</span>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded-full bg-blue-50 text-blue-500">
+              <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-game-primary">
                 {GAME_MODES[gameMode].label}
               </span>
             </div>
@@ -61,35 +59,35 @@ export function GameHeader({
         </button>
       </div>
 
-      <div className="flex items-center gap-6 md:gap-16">
+      <div className="flex items-center gap-5 md:gap-10">
         {gameMode === 'TIME_ATTACK' && (
           <div className="flex flex-col items-center md:items-end">
-            <span className="text-[10px] font-black text-[#A0AEC0] uppercase tracking-[0.2em] mb-1">Thời gian còn lại</span>
-            <div className={`flex items-center gap-3 text-3xl font-mono font-black ${timeLeft < 20 ? 'text-red-500 animate-pulse' : 'text-[#1A1A1A]'}`}>
-              <Timer size={24} strokeWidth={3} />
+            <span className="text-[10px] font-semibold text-game-text-faint uppercase tracking-wider mb-0.5">Thời gian</span>
+            <div className={`flex items-center gap-2 text-2xl font-mono font-extrabold ${timeLeft < 20 ? 'text-game-danger animate-pulse' : 'text-game-text'}`}>
+              <Timer size={20} strokeWidth={2.5} />
               {formatTime(timeLeft)}
             </div>
           </div>
         )}
         {gameMode === 'ENDLESS' && (
           <div className="flex flex-col items-center md:items-end">
-            <span className="text-[10px] font-black text-[#A0AEC0] uppercase tracking-[0.2em] mb-1">Trạng thái</span>
-            <div className="flex items-center gap-3 text-3xl font-mono font-black text-emerald-500">
-              <Play size={24} fill="currentColor" />
+            <span className="text-[10px] font-semibold text-game-text-faint uppercase tracking-wider mb-0.5">Trạng thái</span>
+            <div className="flex items-center gap-2 text-2xl font-mono font-extrabold text-emerald-500">
+              <Play size={20} fill="currentColor" />
               VÔ TẬN
             </div>
           </div>
         )}
         <div className="flex flex-col items-center md:items-end">
-          <span className="text-[10px] font-black text-[#A0AEC0] uppercase tracking-[0.2em] mb-1">Tổng điểm</span>
-          <div className="flex items-center gap-3 text-3xl font-mono font-black text-[#1A1A1A]">
+          <span className="text-[10px] font-semibold text-game-text-faint uppercase tracking-wider mb-0.5">Điểm</span>
+          <div className="flex items-center gap-2 text-2xl font-mono font-extrabold text-game-text">
             <div className="relative">
-              <Trophy size={24} className={isFeverMode ? "text-orange-500" : "text-yellow-500"} strokeWidth={3} />
+              <Trophy size={20} className={isFeverMode ? "text-game-accent" : "text-yellow-500"} strokeWidth={2.5} />
               {isFeverMode && (
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 bg-orange-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center border border-white"
+                  className="absolute -top-1.5 -right-1.5 bg-game-accent text-white text-[7px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ring-2 ring-white"
                 >
                   3x
                 </motion.div>
@@ -104,12 +102,12 @@ export function GameHeader({
             onToggleMute();
             if (isMuted) playSound(SOUNDS.CLICK);
           }}
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 cursor-pointer ${
-            isMuted ? 'bg-gray-100 text-gray-400' : 'bg-blue-50 text-blue-500 shadow-sm'
+          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer ${
+            isMuted ? 'bg-game-surface-alt text-game-text-faint' : 'bg-indigo-50 text-game-primary'
           }`}
           title={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
         >
-          {isMuted ? <VolumeX size={24} strokeWidth={3} /> : <Volume2 size={24} strokeWidth={3} />}
+          {isMuted ? <VolumeX size={20} strokeWidth={2.5} /> : <Volume2 size={20} strokeWidth={2.5} />}
         </button>
       </div>
     </header>

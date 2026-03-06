@@ -41,7 +41,7 @@ export function GameGrid({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute -inset-10 bg-orange-500/10 blur-[100px] rounded-full z-0 pointer-events-none"
+            className="absolute -inset-8 bg-orange-400/10 blur-[80px] rounded-full z-0 pointer-events-none"
           />
         )}
       </AnimatePresence>
@@ -53,7 +53,7 @@ export function GameGrid({
           x: [-2, 2, -2, 2, 0],
           transition: { duration: 0.4 }
         } : {}}
-        className={`relative bg-white p-1.5 md:p-3 rounded-[3rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border-[6px] border-white transition-all duration-700 ${gameState !== 'playing' ? 'blur-md grayscale-[0.3]' : ''} ${isFeverMode ? 'border-orange-100' : ''} cursor-crosshair touch-none select-none overflow-hidden z-10`}
+        className={`relative bg-game-surface p-1.5 md:p-3 rounded-card-lg shadow-[0_8px_32px_-8px_rgba(78,69,229,0.1)] border-2 border-game-border transition-all duration-500 ${gameState !== 'playing' ? 'blur-md grayscale-[0.3]' : ''} ${isFeverMode ? 'border-orange-200 shadow-[0_8px_40px_-8px_rgba(249,115,22,0.2)]' : ''} cursor-crosshair touch-none select-none overflow-hidden z-10`}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
@@ -96,10 +96,10 @@ export function GameGrid({
         {isDragging && selection.start && selection.end && (
           <>
             <div
-              className={`absolute rounded-2xl pointer-events-none z-20 transition-all duration-200 border-2 ${
-                currentSelectionSum === TARGET_SUM ? 'border-green-500 bg-green-500/5' :
-                currentSelectionSum > TARGET_SUM ? 'border-red-500 bg-red-500/5' :
-                'border-blue-500 bg-blue-500/5'
+              className={`absolute rounded-xl pointer-events-none z-20 transition-colors duration-150 border-2 ${
+                currentSelectionSum === TARGET_SUM ? 'border-emerald-400 bg-emerald-400/8' :
+                currentSelectionSum > TARGET_SUM ? 'border-red-400 bg-red-400/8' :
+                'border-indigo-400 bg-indigo-400/8'
               }`}
               style={{
                 left: `${Math.min(selection.start.c, selection.end.c) * (100 / config.cols)}%`,
@@ -112,8 +112,8 @@ export function GameGrid({
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className={`absolute pointer-events-none z-30 px-4 py-1.5 rounded-full text-sm font-black text-white shadow-2xl transition-colors duration-300 flex items-center gap-2 ${
-                currentSelectionSum === 10 ? 'bg-green-500' : currentSelectionSum > 10 ? 'bg-red-500' : 'bg-blue-600'
+              className={`absolute pointer-events-none z-30 px-3.5 py-1.5 rounded-full text-sm font-bold text-white shadow-lg transition-colors duration-200 flex items-center gap-1.5 ${
+                currentSelectionSum === 10 ? 'bg-emerald-500' : currentSelectionSum > 10 ? 'bg-red-500' : 'bg-game-primary'
               }`}
               style={{
                 left: `${Math.max(selection.start.c, selection.end.c) * (100 / config.cols)}%`,
@@ -121,7 +121,7 @@ export function GameGrid({
                 transform: 'translate(-50%, -140%)'
               }}
             >
-              {currentSelectionSum === 10 && <Zap size={14} fill="currentColor" />}
+              {currentSelectionSum === 10 && <Zap size={13} fill="currentColor" />}
               Tổng: {currentSelectionSum}
             </motion.div>
           </>
@@ -143,13 +143,13 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
       animate={{
-        scale: apple.isCleared ? 0 : (isSelected ? 1.2 : 1),
+        scale: apple.isCleared ? 0 : (isSelected ? 1.15 : 1),
         opacity: apple.isCleared ? 0 : 1,
         rotate: apple.isCleared ? 45 : (isSelected && apple.type === 'clock' ? 360 : 0),
         x: (isFeverMode && !apple.isCleared) ? [0, -1, 1, -1, 1, 0] : 0,
         y: (isFeverMode && !apple.isCleared) ? [0, 1, -1, 1, -1, 0] : (apple.type === 'golden' && !apple.isCleared && !isSelected ? [0, -4, 0] : 0),
       }}
-      whileHover={!apple.isCleared ? { scale: 1.1 } : {}}
+      whileHover={!apple.isCleared ? { scale: 1.08 } : {}}
       transition={{
         scale: {
           type: "spring",
@@ -170,7 +170,7 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
         },
         opacity: { duration: 0.2 }
       }}
-      className={`relative flex items-center justify-center rounded-xl transition-all duration-500 cursor-pointer ${
+      className={`relative flex items-center justify-center rounded-lg transition-all duration-300 cursor-pointer ${
         apple.isCleared ? 'pointer-events-none' : 'opacity-100'
       } ${isSelected ? `${selectedFruit.lightColor} z-10` : 'bg-transparent'}`}
     >
@@ -181,7 +181,7 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3],
+                opacity: [0.2, 0.5, 0.2],
               }}
               transition={{
                 repeat: Infinity,
@@ -227,7 +227,7 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
             </div>
           )}
 
-          <span className={`relative z-10 font-mono font-black text-lg md:text-2xl transition-all duration-300 ${isSelected ? 'text-white scale-125' : apple.type !== 'normal' ? 'text-white' : 'text-[#4A4A4A]'}`}>
+          <span className={`relative z-10 font-mono font-extrabold text-lg md:text-2xl transition-all duration-300 ${isSelected ? 'text-white scale-125' : apple.type !== 'normal' ? 'text-white' : 'text-game-text/70'}`}>
             {apple.type === 'bomb' ? (
               <motion.div
                 animate={isSelected ? { scale: [1, 1.2, 1] } : {}}

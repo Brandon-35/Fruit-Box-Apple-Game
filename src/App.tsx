@@ -117,7 +117,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB] text-[#2D3436] font-sans selection:bg-red-100 overflow-x-hidden">
+    <div className="min-h-screen bg-game-bg font-body text-game-text selection:bg-indigo-100 overflow-x-hidden">
       <GameHeader
         difficulty={difficulty}
         gameMode={gameMode}
@@ -132,7 +132,7 @@ export default function App() {
         playSound={playSound}
       />
 
-      <main className="max-w-[1400px] mx-auto px-4 py-10 flex flex-col items-center">
+      <main className="max-w-[1400px] mx-auto px-4 py-8 flex flex-col items-center">
         <MissionPanel
           currentMission={mission.currentMission}
           missionChainProgress={mission.missionChainProgress}
@@ -198,14 +198,14 @@ export default function App() {
         playSound={playSound}
       />
 
-      <footer className="max-w-7xl mx-auto px-6 py-20 text-center">
-        <div className="flex items-center justify-center gap-4 mb-6">
-          <div className="h-[1px] w-12 bg-[#F1F3F5]" />
-          <span className="text-[#A0AEC0] text-[11px] font-black uppercase tracking-[0.5em]">Phiên bản Fruit Box Pro</span>
-          <div className="h-[1px] w-12 bg-[#F1F3F5]" />
+      <footer className="max-w-7xl mx-auto px-6 py-16 text-center">
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="h-px w-12 bg-game-border" />
+          <span className="text-game-text-faint text-[11px] font-semibold uppercase tracking-[0.4em]">Fruit Box Pro</span>
+          <div className="h-px w-12 bg-game-border" />
         </div>
-        <p className="text-[#A0AEC0] text-[10px] font-bold uppercase tracking-widest opacity-60">
-          Động cơ Đa Trái Cây v4.0 &bull; Tối ưu hóa cho màn hình Retina
+        <p className="text-game-text-faint/50 text-[10px] font-medium uppercase tracking-widest">
+          Multi-Fruit Engine v4.0
         </p>
       </footer>
     </div>

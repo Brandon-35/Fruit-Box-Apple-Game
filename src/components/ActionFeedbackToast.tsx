@@ -13,33 +13,34 @@ export function ActionFeedbackToast({ lastAction }: ActionFeedbackToastProps) {
         {lastAction && (
           <motion.div
             key={lastAction.id}
-            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            initial={{ opacity: 0, y: -16, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.9 }}
-            className={`flex items-center gap-3 px-6 py-3 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] border backdrop-blur-md ${
+            exit={{ opacity: 0, y: -16, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className={`flex items-center gap-2.5 px-5 py-2.5 rounded-card shadow-lg border backdrop-blur-md ${
               lastAction.type === 'success'
-                ? 'bg-green-500/90 border-green-400 text-white'
-                : 'bg-red-500/90 border-red-400 text-white'
+                ? 'bg-emerald-500/90 border-emerald-400/50 text-white'
+                : 'bg-red-500/90 border-red-400/50 text-white'
             }`}
           >
             {lastAction.type === 'success' ? (
               <>
-                <div className="bg-white/20 p-1.5 rounded-lg">
-                  <CheckCircle2 size={20} strokeWidth={3} />
+                <div className="bg-white/20 p-1 rounded-lg">
+                  <CheckCircle2 size={18} strokeWidth={2.5} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-black text-sm uppercase tracking-wider">Tuyệt vời!</span>
-                  <span className="text-[10px] font-bold opacity-80">Tính toán rất tốt</span>
+                  <span className="font-bold text-sm">Tuyệt vời!</span>
+                  <span className="text-[10px] font-medium opacity-80">Tính toán rất tốt</span>
                 </div>
               </>
             ) : (
               <>
-                <div className="bg-white/20 p-1.5 rounded-lg">
-                  <XCircle size={20} strokeWidth={3} />
+                <div className="bg-white/20 p-1 rounded-lg">
+                  <XCircle size={18} strokeWidth={2.5} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-black text-sm uppercase tracking-wider">Thử lại</span>
-                  <span className="text-[10px] font-bold opacity-80">Tổng phải bằng đúng 10</span>
+                  <span className="font-bold text-sm">Thử lại</span>
+                  <span className="text-[10px] font-medium opacity-80">Tổng phải bằng đúng 10</span>
                 </div>
               </>
             )}

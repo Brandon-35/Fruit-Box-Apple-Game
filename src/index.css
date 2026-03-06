@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+@theme {
+  --font-heading: "Baloo 2", cursive;
+  --font-body: "Inter", sans-serif;
+
+  --color-game-bg: #F0F4FF;
+  --color-game-surface: #FFFFFF;
+  --color-game-surface-alt: #F7F8FC;
+  --color-game-border: #E8ECF4;
+  --color-game-text: #1E1B4B;
+  --color-game-text-muted: #6B7194;
+  --color-game-text-faint: #9CA3C4;
+  --color-game-primary: #4F46E5;
+  --color-game-primary-light: #EEF2FF;
+  --color-game-accent: #F97316;
+  --color-game-accent-light: #FFF7ED;
+  --color-game-success: #10B981;
+  --color-game-danger: #EF4444;
+
+  --radius-card: 1.5rem;
+  --radius-card-lg: 2rem;
+  --radius-button: 1rem;
+  --radius-pill: 9999px;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-game-bg);
+  color: var(--color-game-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
