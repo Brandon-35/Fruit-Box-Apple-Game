@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import { Pause, Home } from 'lucide-react';
 import type { FruitConfig } from '../types';
 import { SOUNDS } from '../data/gameData';
@@ -15,14 +15,14 @@ export function PauseOverlay({ show, selectedFruit, onResume, onGoHome, playSoun
   return (
     <AnimatePresence>
       {show && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-game-bg/70 backdrop-blur-2xl"
         >
-          <motion.div
+          <m.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
@@ -34,7 +34,7 @@ export function PauseOverlay({ show, selectedFruit, onResume, onGoHome, playSoun
             </div>
             <h2 className="text-4xl font-heading font-extrabold text-game-text mb-8 tracking-tight">Đã Tạm Dừng</h2>
             <div className="flex flex-col gap-3">
-              <motion.button
+              <m.button
                 onClick={() => {
                   onResume();
                   playSound(SOUNDS.CLICK);
@@ -44,7 +44,7 @@ export function PauseOverlay({ show, selectedFruit, onResume, onGoHome, playSoun
                 className={`w-full px-12 py-5 ${selectedFruit.color} text-white rounded-card font-heading font-bold text-xl shadow-lg ${selectedFruit.shadow} hover:brightness-110 transition-all cursor-pointer`}
               >
                 Tiếp tục
-              </motion.button>
+              </m.button>
               <button
                 onClick={onGoHome}
                 className="w-full px-12 py-4 bg-game-surface-alt text-game-text-muted rounded-card font-bold text-base hover:text-game-text hover:bg-game-border/50 transition-all flex items-center justify-center gap-2 cursor-pointer border border-game-border"
@@ -52,8 +52,8 @@ export function PauseOverlay({ show, selectedFruit, onResume, onGoHome, playSoun
                 <Home size={20} /> Thoát ra Trang chủ
               </button>
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

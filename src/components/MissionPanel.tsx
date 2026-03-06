@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import { Timer, CheckCircle2, RotateCcw, Zap } from 'lucide-react';
 import type { Mission } from '../types';
 
@@ -11,7 +11,7 @@ export function MissionPanel({ currentMission, missionChainProgress }: MissionPa
   return (
     <AnimatePresence>
       {currentMission && (
-        <motion.div
+        <m.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
@@ -39,7 +39,7 @@ export function MissionPanel({ currentMission, missionChainProgress }: MissionPa
               </span>
             </div>
             <div className="h-2 w-full bg-game-surface-alt rounded-full overflow-hidden border border-game-border">
-              <motion.div
+              <m.div
                 className="h-full bg-game-primary rounded-full"
                 animate={{ width: `${((currentMission.type === 'CHAIN' ? missionChainProgress : currentMission.currentProgress) / currentMission.targetCount) * 100}%` }}
               />
@@ -63,7 +63,7 @@ export function MissionPanel({ currentMission, missionChainProgress }: MissionPa
                currentMission.rewardType === 'FREEZE' ? 'Đóng băng 3s' : '3 Táo Vàng'}
             </div>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

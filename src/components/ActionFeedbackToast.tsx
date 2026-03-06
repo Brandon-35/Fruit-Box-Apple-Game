@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import type { ActionFeedback } from '../types';
 
@@ -11,7 +11,7 @@ export function ActionFeedbackToast({ lastAction }: ActionFeedbackToastProps) {
     <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
       <AnimatePresence mode="wait">
         {lastAction && (
-          <motion.div
+          <m.div
             key={lastAction.id}
             initial={{ opacity: 0, y: -16, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -44,7 +44,7 @@ export function ActionFeedbackToast({ lastAction }: ActionFeedbackToastProps) {
                 </div>
               </>
             )}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { Zap, Clock } from 'lucide-react';
 import { CONSTANTS } from '../data/gameData';
 
@@ -20,36 +20,36 @@ export function ComboGauge({ comboCount, isFeverMode, feverTimeLeft, timeFrozenL
             {isFeverMode ? 'Fever Mode' : 'Combo'}
           </span>
           {timeFrozenLeft > 0 && (
-            <motion.div
+            <m.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"
             >
               <Clock size={10} /> {Math.ceil(timeFrozenLeft)}s
-            </motion.div>
+            </m.div>
           )}
           {comboCount > 0 && !isFeverMode && (
-            <motion.span
+            <m.span
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="bg-game-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full"
             >
               {comboCount}x
-            </motion.span>
+            </m.span>
           )}
         </div>
         {isFeverMode && (
-          <motion.div
+          <m.div
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ repeat: Infinity, duration: 0.5 }}
             className="text-game-accent font-bold text-xs tracking-wider uppercase flex items-center gap-1.5"
           >
             <Zap size={13} fill="currentColor" /> x3 Điểm
-          </motion.div>
+          </m.div>
         )}
       </div>
       <div className="h-2.5 w-full bg-game-surface-alt rounded-full overflow-hidden border border-game-border">
-        <motion.div
+        <m.div
           className={`h-full rounded-full transition-colors duration-300 ${isFeverMode ? 'bg-gradient-to-r from-orange-400 via-red-500 to-orange-400 bg-[length:200%_100%]' : 'bg-game-accent'}`}
           animate={isFeverMode ? { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] } : {}}
           transition={isFeverMode ? { repeat: Infinity, duration: 2, ease: "linear" } : {}}

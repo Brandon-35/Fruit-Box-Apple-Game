@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import { Bomb, Clock, Sparkles, Trophy, Zap } from 'lucide-react';
 import type { AppleData, Selection, FruitConfig, DifficultyConfig } from '../types';
 import { CONSTANTS } from '../data/gameData';
@@ -37,7 +37,7 @@ export function GameGrid({
       {/* Fever Mode Background Glow */}
       <AnimatePresence>
         {isFeverMode && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -47,7 +47,7 @@ export function GameGrid({
       </AnimatePresence>
 
       {/* Grid Container */}
-      <motion.div
+      <m.div
         ref={gridRef}
         animate={isShaking ? {
           x: [-2, 2, -2, 2, 0],
@@ -109,7 +109,7 @@ export function GameGrid({
               }}
             />
             {/* Sum Indicator */}
-            <motion.div
+            <m.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className={`absolute pointer-events-none z-30 px-3.5 py-1.5 rounded-full text-sm font-bold text-white shadow-lg transition-colors duration-200 flex items-center gap-1.5 ${
@@ -123,10 +123,10 @@ export function GameGrid({
             >
               {currentSelectionSum === 10 && <Zap size={13} fill="currentColor" />}
               Tổng: {currentSelectionSum}
-            </motion.div>
+            </m.div>
           </>
         )}
-      </motion.div>
+      </m.div>
     </div>
   );
 }
@@ -140,8 +140,8 @@ interface AppleCellProps {
 
 const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, selectedFruit }) => {
   return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
+    <m.div
+      initial={{ scale: 0.95, opacity: 0 }}
       animate={{
         scale: apple.isCleared ? 0 : (isSelected ? 1.15 : 1),
         opacity: apple.isCleared ? 0 : 1,
@@ -178,7 +178,7 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
         <div className="relative w-full h-full flex items-center justify-center group">
           {/* Special Apple Glows */}
           {apple.type !== 'normal' && (
-            <motion.div
+            <m.div
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.2, 0.5, 0.2],
@@ -219,7 +219,7 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
           {/* Shine Effect for Special Apples */}
           {apple.type !== 'normal' && (
             <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-              <motion.div
+              <m.div
                 animate={{ x: ['-100%', '200%'] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "linear", delay: Math.random() * 2 }}
                 className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-12"
@@ -229,36 +229,36 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
 
           <span className={`relative z-10 font-mono font-extrabold text-lg md:text-2xl transition-all duration-300 ${isSelected ? 'text-white scale-125' : apple.type !== 'normal' ? 'text-white' : 'text-game-text/70'}`}>
             {apple.type === 'bomb' ? (
-              <motion.div
+              <m.div
                 animate={isSelected ? { scale: [1, 1.2, 1] } : {}}
                 transition={{ repeat: isSelected ? Infinity : 0, duration: 0.5 }}
               >
                 <Bomb size={22} strokeWidth={3} className="drop-shadow-md" />
-              </motion.div>
+              </m.div>
             ) :
              apple.type === 'clock' ? (
-              <motion.div
+              <m.div
                 animate={isSelected ? { rotate: 360 } : {}}
                 transition={{ repeat: isSelected ? Infinity : 0, duration: 2, ease: "linear" }}
               >
                 <Clock size={22} strokeWidth={3} className="drop-shadow-md" />
-              </motion.div>
+              </m.div>
              ) :
              apple.type === 'wildcard' ? (
-              <motion.div
+              <m.div
                 animate={isSelected ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
                 transition={{ repeat: isSelected ? Infinity : 0, duration: 0.6 }}
               >
                 <Sparkles size={22} strokeWidth={3} className="drop-shadow-md" />
-              </motion.div>
+              </m.div>
              ) :
              apple.type === 'golden' ? (
-              <motion.div
+              <m.div
                 animate={isSelected ? { y: [0, -5, 0], scale: [1, 1.2, 1] } : {}}
                 transition={{ repeat: isSelected ? Infinity : 0, duration: 1 }}
               >
                 <Trophy size={22} strokeWidth={3} className="drop-shadow-md" />
-              </motion.div>
+              </m.div>
              ) :
              apple.value}
           </span>
@@ -269,6 +269,6 @@ const AppleCell: React.FC<AppleCellProps> = ({ apple, isSelected, isFeverMode, s
           </div>
         </div>
       )}
-    </motion.div>
+    </m.div>
   );
 };

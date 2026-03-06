@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { Info, Trophy, Timer, Zap, ChevronRight, Settings, Bomb, Clock } from 'lucide-react';
 import type { DifficultyKey, GameModeKey, FruitConfig } from '../types';
 import { DIFFICULTIES, GAME_MODES, FRUITS } from '../data/gameData';
@@ -23,20 +23,20 @@ export function HomeScreen({
 
   return (
     <div className="min-h-screen bg-game-bg font-body text-game-text flex items-center justify-center p-4 md:p-6">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="max-w-2xl w-full bg-game-surface rounded-card-lg shadow-[0_8px_40px_-12px_rgba(78,69,229,0.15)] border border-game-border overflow-hidden"
       >
         <div className="p-8 md:p-12 text-center">
-          <motion.div
+          <m.div
             animate={{ rotate: [0, 8, -8, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
             className={`w-20 h-20 ${selectedFruit.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg ${selectedFruit.shadow}`}
           >
             <span className="text-4xl">{selectedFruit.icon}</span>
-          </motion.div>
+          </m.div>
 
           <h1 className="text-4xl md:text-5xl font-heading font-extrabold tracking-tight text-game-text mb-3">Fruit Box</h1>
           <p className="text-game-text-muted mb-10 font-medium text-base leading-relaxed max-w-md mx-auto">
@@ -159,7 +159,7 @@ export function HomeScreen({
             </div>
           </div>
 
-          <motion.button
+          <m.button
             onClick={onStartGame}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0, scale: 0.98 }}
@@ -168,7 +168,7 @@ export function HomeScreen({
             <span className="flex items-center justify-center gap-2">
               Chơi Ngay <ChevronRight size={24} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
             </span>
-          </motion.button>
+          </m.button>
         </div>
 
         <div className="bg-game-surface-alt py-4 px-8 md:px-12 flex justify-between items-center border-t border-game-border">
@@ -183,7 +183,7 @@ export function HomeScreen({
             </span>
           </div>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

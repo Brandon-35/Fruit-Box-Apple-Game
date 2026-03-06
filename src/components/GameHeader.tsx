@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import { Timer, Trophy, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import type { DifficultyKey, GameModeKey, FruitConfig, GameState } from '../types';
 import { DIFFICULTIES, GAME_MODES, SOUNDS } from '../data/gameData';
@@ -36,13 +36,13 @@ export function GameHeader({
           onClick={onGoHome}
           className="group flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer"
         >
-          <motion.div
+          <m.div
             whileHover={{ scale: 1.05, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
             className={`w-11 h-11 ${selectedFruit.color} rounded-xl flex items-center justify-center shadow-md ${selectedFruit.shadow}`}
           >
             <span className="text-white font-bold text-2xl">{selectedFruit.icon}</span>
-          </motion.div>
+          </m.div>
           <div className="text-left">
             <h1 className="text-2xl font-heading font-extrabold tracking-tight text-game-text group-hover:text-game-primary transition-colors">Fruit Box</h1>
             <div className="flex items-center gap-2">
@@ -84,13 +84,13 @@ export function GameHeader({
             <div className="relative">
               <Trophy size={20} className={isFeverMode ? "text-game-accent" : "text-yellow-500"} strokeWidth={2.5} />
               {isFeverMode && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                <m.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
                   className="absolute -top-1.5 -right-1.5 bg-game-accent text-white text-[7px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ring-2 ring-white"
                 >
                   3x
-                </motion.div>
+                </m.div>
               )}
             </div>
             {score.toString().padStart(4, '0')}
