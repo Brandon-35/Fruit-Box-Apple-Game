@@ -1,0 +1,5 @@
+{
+  "name": "Fruit Box: Apple Game",
+  "description": "A classic puzzle game where you select rectangular groups of apples that sum to 10 to clear the board and score points.",
+  "requestFramePermissions": []
+}
