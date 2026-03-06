@@ -1,20 +1,46 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Fruit Box: Apple Game
 
-# Run and deploy your AI Studio app
+A classic puzzle game where you select rectangular groups of fruits that sum to 10 to clear the board and score points.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/05da80c5-3f79-4728-bd29-d544a62ce963
+- **Multiple Fruit Types**: Apples, oranges, grapes, strawberries, watermelons, and more
+- **Game Modes**: Time Attack (score within a time limit) and Endless (no time pressure)
+- **Difficulty Levels**: Easy, Medium, and Hard with different board sizes and time limits
+- **Drag Selection**: Select rectangular areas on the board to match groups summing to 10
+- **Responsive UI**: Built with React, Tailwind CSS, and Motion for smooth animations
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS 4
+- Motion (Framer Motion)
+- Lucide React Icons
 
+## Getting Started
+
+**Prerequisites:** Node.js (v18+)
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server on port 3000 |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Type-check with TypeScript |
+| `npm run clean` | Remove dist folder |
